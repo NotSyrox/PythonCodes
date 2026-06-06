@@ -1,9 +1,22 @@
 class Connect4():
 
-    def __init__(self) -> None:
+    def __init__(self, plyr1, plyr2) -> None:
         self.board: list[list[int]] = [[0 for _ in range(7)] for _ in range(6)]
         self.won = False
         self.turn = 0
+        self.players = [plyr1, plyr2]
+        self.printBoard()
+        
+    def printBoard(self) -> None:
+        for i in range(len(self.board)):
+            for j in range(len(self.board[0])):
+                if j == 6:
+                    print(f" {self.board[i][j]}")
+                else:
+                    print(f" {self.board[i][j]} |", end="")
+            if i != 5:
+                print("---------------------------")
+        
     def play(self, col) -> str:
         
         def colCheck(colm) -> tuple[int, int] | None:
@@ -14,20 +27,35 @@ class Connect4():
         
         
         def didWin(board) -> str | None:
-            pass
-            
-        if colCheck(col) is None:
+            return None
+
+        pos: tuple[int, int] | None = colCheck(col)
+
+        if pos is None:
             return "Column full!"
-        row: int
-        column: int
-        row, column = colCheck(col)
-        self.board[row][column] = str(self.turn+1) 
+        
+        row , column = pos
+        
+        self.board[row][column] = self.turn+1
             
         winCheck: str | None = didWin(self.board)
         if winCheck is not None:
             return winCheck
         
-        result: str = f"Player {self.turn+1} has a turn"
+        self.printBoard()
+        
+        result: str = f"\nPlayer {self.players[self.turn]} has a turn\n\n"
         self.turn: int = (self.turn + 1) % 2
         return result
     
+firstGame: Connect4 = Connect4("Dhyan", "Marcus")
+print(firstGame.play(3))
+print(firstGame.play(3))
+print(firstGame.play(3))
+print(firstGame.play(3))
+print(firstGame.play(3))
+print(firstGame.play(3))
+print(firstGame.play(3))
+print(firstGame.play(3))
+print(firstGame.play(3))
+print(firstGame.play(3))
