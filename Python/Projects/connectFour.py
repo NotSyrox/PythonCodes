@@ -8,6 +8,9 @@ class Connect4():
         self.printBoard()
         
     def printBoard(self) -> None:
+
+        print("\n 0   1   2   3   4   5   6")
+        print("---------------------------\n")
         for i in range(len(self.board)):
             for j in range(len(self.board[0])):
                 if j == 6:
@@ -16,6 +19,7 @@ class Connect4():
                     print(f" {self.board[i][j]} |", end="")
             if i != 5:
                 print("---------------------------")
+        print()
         
     def play(self, col) -> str:
         
@@ -44,7 +48,7 @@ class Connect4():
         
         self.printBoard()
         
-        result: str = f"\nPlayer {self.players[self.turn]} has a turn\n\n"
+        result: str = f" Player {self.players[self.turn]} has a turn\n"
         self.turn: int = (self.turn + 1) % 2
         return result
     
