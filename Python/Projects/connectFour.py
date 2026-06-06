@@ -53,9 +53,13 @@ class Connect4():
         return result
     
 firstGame: Connect4 = Connect4("Dhyan", "Marcus")
-print(firstGame.play(3))
-print(firstGame.play(3))
-print(firstGame.play(3))
-print(firstGame.play(3))
-print(firstGame.play(3))
-print(firstGame.play(3))
+
+while True:
+    ask = int(input(" Enter column to play: "))
+    if ask < 0 or ask > 6:
+        print(" Invalid column! Try again.")
+        continue
+    elif ask == "EXIT":
+        print(" Exiting game...")
+        break
+    print(firstGame.play(ask))
