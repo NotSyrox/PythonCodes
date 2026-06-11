@@ -1,26 +1,26 @@
 import time
-sudoku_board = [
-    [8, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 3, 6, 0, 0, 0, 0, 0],
-    [0, 7, 0, 0, 9, 0, 2, 0, 0],
-    [0, 5, 0, 0, 0, 7, 0, 0, 0],
-    [0, 0, 0, 0, 4, 5, 7, 0, 0],
-    [0, 0, 0, 1, 0, 0, 0, 3, 0],
-    [0, 0, 1, 0, 0, 0, 0, 6, 8],
-    [0, 0, 8, 5, 0, 0, 0, 1, 0],
-    [0, 9, 0, 0, 0, 0, 4, 0, 0]
-]
 # sudoku_board = [
-#     [0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 0, 0, 3, 0, 8, 5],
-#     [0, 0, 1, 0, 2, 0, 0, 0, 0],
-#     [0, 0, 0, 5, 0, 7, 0, 0, 0],
-#     [0, 0, 4, 0, 0, 0, 1, 0, 0],
-#     [0, 9, 0, 0, 0, 0, 0, 0, 0],
-#     [5, 0, 0, 0, 0, 0, 0, 7, 3],
-#     [0, 0, 2, 0, 1, 0, 0, 0, 0],
-#     [0, 0, 0, 0, 4, 0, 0, 0, 9]
+#     [8, 0, 0, 0, 0, 0, 0, 0, 0],
+#     [0, 0, 3, 6, 0, 0, 0, 0, 0],
+#     [0, 7, 0, 0, 9, 0, 2, 0, 0],
+#     [0, 5, 0, 0, 0, 7, 0, 0, 0],
+#     [0, 0, 0, 0, 4, 5, 7, 0, 0],
+#     [0, 0, 0, 1, 0, 0, 0, 3, 0],
+#     [0, 0, 1, 0, 0, 0, 0, 6, 8],
+#     [0, 0, 8, 5, 0, 0, 0, 1, 0],
+#     [0, 9, 0, 0, 0, 0, 4, 0, 0]
 # ]
+sudoku_board = [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 3, 0, 8, 5],
+    [0, 0, 1, 0, 2, 0, 0, 0, 0],
+    [0, 0, 0, 5, 0, 7, 0, 0, 0],
+    [0, 0, 4, 0, 0, 0, 1, 0, 0],
+    [0, 9, 0, 0, 0, 0, 0, 0, 0],
+    [5, 0, 0, 0, 0, 0, 0, 7, 3],
+    [0, 0, 2, 0, 1, 0, 0, 0, 0],
+    [0, 0, 0, 0, 4, 0, 0, 0, 9]
+]
 
 def solve(board:list[list[int]]) -> bool:
     find: tuple[int, int] | None = findEmpty(board)
@@ -29,7 +29,7 @@ def solve(board:list[list[int]]) -> bool:
     else:
         row, col= find
     for i in range(1,10):
-        if valid(board, i,(row,col)):
+        if isValid(board, i,(row,col)):
             board[row][col] = i
 
             if solve(board):
@@ -37,7 +37,7 @@ def solve(board:list[list[int]]) -> bool:
             board[row][col] = 0
     return False
 
-def valid(board:list[list[int]], num:int, pos:tuple) -> bool:
+def isValid(board:list[list[int]], num:int, pos:tuple) -> bool:
     
     # Checking Row
     for i in range(len(board[0])): 
@@ -74,24 +74,24 @@ def printBoard(board:list[list[int]]) -> None:
                 print(str(board[i][j])+ " ", end="")
 
 def findEmpty(board:list[list[int]]) -> tuple[int,int] | None:
-    # # count= {}
-    # for j in range(len(board)):
-    #     for k in range(len(board)):
-    #         if board[j][k] == 0:
-    #             count[(j,k)] = 0
-    # for i in range(1,10):
-    #     for j in range(len(board)):
-    #         for k in range(len(board)):
-    #             if board[j][k] == 0 and isValid(board, i , (j,k)):
-    #                 count[(j,k)] +=1
-    # return min(count, key=count.get, default=None) #type: ignore
+    count= {}
+    for j in range(len(board)):
+        for k in range(len(board)):
+            if board[j][k] == 0:
+                count[(j,k)] = 0
+    for i in range(1,10):
+        for j in range(len(board)):
+            for k in range(len(board)):
+                if board[j][k] == 0 and isValid(board, i , (j,k)):
+                    count[(j,k)] +=1
+    return min(count, key=count.get, default=None) #type: ignore
     
-    for i in range(len(board)):
-        for j in range(len(board[0])):
-            if board[i][j] == 0:
-                return (i, j) # row, col
+    # for i in range(len(board)):
+    #     for j in range(len(board[0])):
+    #         if board[i][j] == 0:
+    #             return (i, j) # row, col
 
-    return None
+    # return None
 
 print("_________________________")
 print()
