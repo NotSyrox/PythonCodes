@@ -1,11 +1,15 @@
 # Git commands:
-# 
-#
-#
-#
-#
-#
-#
-#
-#
-#
+# To create a new repository: git init
+# To add files to staging area: git add <filename> (or git add . to add all files)
+# To commit changes: git commit -m "commit message" (or git commit -am "commit message" to add and commit in one step)
+# To push changes to remote repository: git push origin <branch-name>
+# To pull changes from remote repository: git pull origin <branch-name>
+# To check the status of the repository: git status
+# To view commit history: git log
+# To create a new branch: git checkout -b <branch-name>
+# To switch to an existing branch: git checkout <branch-name>
+# To merge a branch into the current branch: git merge <branch-name> (make sure to be on the branch you want to merge into)
+# To delete a branch: git branch -d <branch-name>
+# To clone a repository: git clone <repository-url>
+# To view differences between commits: git diff <commit1> <commit2>
+# Note: Always make sure to pull the latest changes from the remote repository before making new commits to avoid merge conflicts.
