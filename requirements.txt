@@ -1,3 +1,5 @@
+# To install these packages, run: pip install -r requirements.txt
+
 DateTime==6.0
 pygame==2.6.1
 termcolor==3.3.0
