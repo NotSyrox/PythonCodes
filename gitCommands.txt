@@ -12,4 +12,5 @@
 # To delete a branch: git branch -d <branch-name>
 # To clone a repository: git clone <repository-url>
 # To view differences between commits: git diff <commit1> <commit2>
-# Note: Always make sure to pull the latest changes from the remote repository before making new commits to avoid merge conflicts.
+
+Note: Always make sure to pull the latest changes from the remote repository before making new commits to avoid merge conflicts.
