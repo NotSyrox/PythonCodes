@@ -41,3 +41,4 @@ if result:
     print(f"You took {attempts} attempts.")
 if not result:
     print("You Lost!")
+    print(f"The word was {Word.upper()}.")
