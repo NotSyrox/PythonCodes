@@ -40,7 +40,7 @@ class BinarySearchTree:
                 cur = cur.left
             else:
                 if cur.right is None:
-                    return None
+                    return False
                 if cur.right == data:
                     return True
                 cur = cur.right
