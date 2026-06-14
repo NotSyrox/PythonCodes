@@ -104,7 +104,7 @@ binTree.insert(1)
 binTree.insert(2)
 binTree.insert(5)
 binTree.insert(4)
-
+binTree.insert(7)
 binTree.printValues()
 print()
 binTree.delete(4)
