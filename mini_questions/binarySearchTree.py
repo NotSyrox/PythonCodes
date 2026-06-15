@@ -42,7 +42,7 @@ class BinarySearchTree:
     def printValues(self) -> str:
         self._printHelper(self.root)
 
-    def _printHelper(self, cur):
+    def _printHelper(self, cur) -> None:
         if cur is None:
             return
         
@@ -50,7 +50,7 @@ class BinarySearchTree:
         print(cur.data)
         self._printHelper(cur.right)
 
-    def delete(self, data):
+    def delete(self, data) -> None:
         if self.root is None:
             return
         cur = self.root
@@ -95,9 +95,28 @@ class BinarySearchTree:
         
         
         else:
-            pass
-            
+            successor = cur.right
+            while successor.left is not None:
+                successor= successor.left
+            successor_data = successor.data
+            self.delete(successor.data) 
+            cur.data = successor.data
+    
+    def height(self) -> int:
+        return self._heightHelper(self.root)
 
+    def _heightHelper(self, cur: Node | None) -> int:
+        if cur is None:
+            return 0
+        return 1 + max(self._heightHelper(cur.left), self._heightHelper(cur.right))
+
+    def breathFirstSearch(self) -> None:
+        pass
+
+    def depthFirstSearch(self) -> None:
+        pass
+
+    
 binTree = BinarySearchTree()
 binTree.insert(3)
 binTree.insert(1)
@@ -107,5 +126,8 @@ binTree.insert(4)
 binTree.insert(7)
 binTree.printValues()
 print()
-binTree.delete(4)
+binTree.delete(5)
 binTree.printValues()
+
+print()
+print(binTree.height())
