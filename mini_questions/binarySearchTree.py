@@ -47,7 +47,7 @@ class BinarySearchTree:
             return
         
         self._printHelper(cur.left)
-        print(cur.data, end= " ")
+        print(cur.data)
         self._printHelper(cur.right)
 
     def delete(self, data) -> None:
@@ -161,8 +161,12 @@ class BinarySearchTree:
             cur = cur.right
         return cur.data
     
-    
-        
+    def _getLevels(self):
+        pass 
+
+    def printTree(self) -> None:
+        pass
+
 
 binTree = BinarySearchTree()
 binTree.insert(3)
@@ -180,3 +184,4 @@ binTree.breathFirstSearch()
 print("Count: ", binTree.count())
 
 print(f"Max: {binTree.max()}, Min: {binTree.min()}")
+
