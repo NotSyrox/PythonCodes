@@ -47,7 +47,7 @@ class BinarySearchTree:
             return
         
         self._printHelper(cur.left)
-        print(cur.data)
+        print(cur.data, end= " ")
         self._printHelper(cur.right)
 
     def delete(self, data) -> None:
@@ -111,12 +111,59 @@ class BinarySearchTree:
         return 1 + max(self._heightHelper(cur.left), self._heightHelper(cur.right))
 
     def breathFirstSearch(self) -> None:
-        pass
+        if self.root is None:
+            return
+        queue = [self.root]
+        while len(queue) > 0:
+            value = queue.pop(0)
+
+            print(value.data)
+            if value.left is not None:
+                queue.append(value.left)
+            if value.right is not None:
+                queue.append(value.right)
 
     def depthFirstSearch(self) -> None:
-        pass
-
+        self.dfsHelper(self.root)
     
+    def dfsHelper(self, cur) -> None:
+        if cur is None:
+            return 
+        print(cur.data)
+        self.dfsHelper(cur.left)
+        self.dfsHelper(cur.right)
+    
+    def count(self,) -> int:
+        return self._countHelper(self.root)
+    
+    def _countHelper(self, cur):
+        if cur is None:
+            return 0
+        return 1 + self._countHelper(cur.left) + self._countHelper(cur.right)
+    
+    def min(self) -> int:
+        cur = self.root
+        if cur is None:
+            return
+        while True:
+            if cur.left is None:
+                break
+            cur = cur.left
+        return cur.data
+    
+    def max(self) -> int:
+        cur = self.root
+        if cur is None:
+            return
+        while True:
+            if cur.right is None:
+                break
+            cur = cur.right
+        return cur.data
+    
+    
+        
+
 binTree = BinarySearchTree()
 binTree.insert(3)
 binTree.insert(1)
@@ -125,9 +172,11 @@ binTree.insert(5)
 binTree.insert(4)
 binTree.insert(7)
 binTree.printValues()
-print()
-binTree.delete(5)
-binTree.printValues()
 
 print()
-print(binTree.height())
+print("height: " , binTree.height())
+binTree.breathFirstSearch()
+
+print("Count: ", binTree.count())
+
+print(f"Max: {binTree.max()}, Min: {binTree.min()}")
