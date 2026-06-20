@@ -13,6 +13,5 @@ def selection_sort(arr):
         swap(arr,lowest_index,i)
     return arr
 
-array = [5,4,3,2,1]
-
-print(selection_sort(array))
+if __name__ == "__main__":
+    print(selection_sort(    [5,4,3,2,1]))

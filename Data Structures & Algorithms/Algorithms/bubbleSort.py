@@ -10,5 +10,5 @@ def bubbleSort(arr):
 
     return arr
 
-
-print(bubbleSort([12,634,2,6,4,78,9,1]))
+if __name__ == "__main__":
+    print(bubbleSort([12,634,2,6,4,78,9,1]))
