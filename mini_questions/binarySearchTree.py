@@ -54,6 +54,54 @@ class BinarySearchTree:
         if self.root is None:
             return
         cur = self.root
+        parent = None
+        is_left = False
+        while cur is not None:
+            if data == cur.data:
+                break
+            parent = cur
+            if data < cur.data:
+                cur = cur.left
+                is_left = True
+            else:
+                cur = cur.right
+                is_left = False
+        if cur is None:
+            return
+
+        if cur.left is not None and cur.right is not None:
+            successor = cur.right
+            while successor.left is not None:
+                successor = successor.left
+            successor_data = successor.data
+            self.delete(successor_data)
+            cur.data = successor_data
+            return
+
+        if parent is None:
+            if cur.left is None and cur.right is None:
+                self.root = None
+            elif cur.left is None:
+                self.root = cur.right
+            elif cur.right is None:
+                self.root = cur.left
+            return
+
+        if cur.left is None and cur.right is None:
+            if is_left:
+                parent.left = None
+            else:
+                parent.right = None
+        else:
+            child = cur.left if cur.left is not None else cur.right
+            if is_left:
+                parent.left = child
+            else:
+                parent.right = child
+
+        if self.root is None:
+            return
+        cur = self.root
         parent:None | Node = None
         is_left:bool = False
         while cur is not None:
