@@ -50,20 +50,21 @@ class Graph:
         
         del self.nodes[data]
 
-    def hasPath(self, start:int, end:int):
-        try:
-            first = self.nodes[start]
-            last = self.nodes[end]
-        except KeyError:
-            return "The node doesn't exist!"
+    def hasPath(self, start:int, end:int, visited = None):
+        if visited is None:
+            visited = set()
 
-        if first.data not in self.nodes:
+        if start not in self.nodes or end not in self.nodes:
             return False
-        if last.data in first.neighbours:
+        if start == end:
             return True
+        if start in visited:
+            return False
         
-        for n in first.neighbours:
-            if self.hasPath(self.nodes[n].data, last.data):
+        visited.add(start)
+
+        for n in self.nodes[start].neighbours:
+            if self.hasPath(n, end, visited):
                 return True
         return False
 
@@ -76,8 +77,8 @@ graph1.addVertex(3)
 graph1.addVertex(4)
 
 graph1.addEdge(1, 2)
-graph1.addEdge(1, 3)
-graph1.addEdge(4, 2)
+graph1.addEdge(2, 3)
+graph1.addEdge(3, 1)
 print(graph1)
 
 print(graph1.hasPath(1,4))
