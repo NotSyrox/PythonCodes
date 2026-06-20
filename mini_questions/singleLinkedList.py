@@ -117,14 +117,15 @@ class SingleLinkedList:
     def reverse(self) -> None:
         pass
 
-newList= SingleLinkedList()
-newList.append(10)
-newList.append(20)
-newList.append(30)
-newList.append(30)
+if __name__ == "__main__":
+    newList= SingleLinkedList()
+    newList.append(10)
+    newList.append(20)
+    newList.append(30)
+    newList.append(30)
 
-print(newList.length())
-print(newList.count(30))
+    print(newList.length())
+    print(newList.count(30))
 
 
-newList.printList()
+    newList.printList()

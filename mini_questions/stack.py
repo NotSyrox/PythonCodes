@@ -61,18 +61,19 @@ class Stack:
         self.top = None
         self._count= 0
 
-stack1 = Stack()
+if __name__ == "__main__":
+    stack1 = Stack()
 
-stack1.push(1)
-stack1.push(2)
-stack1.push(3)
-print(stack1)
-print()
-print(stack1.pop())
-print(stack1)
-print()
-print(stack1.peek())
-print(stack1.size())
-stack1.clear()
-print(stack1.isEmpty())
-print(stack1)
+    stack1.push(1)
+    stack1.push(2)
+    stack1.push(3)
+    print(stack1)
+    print()
+    print(stack1.pop())
+    print(stack1)
+    print()
+    print(stack1.peek())
+    print(stack1.size())
+    stack1.clear()
+    print(stack1.isEmpty())
+    print(stack1)

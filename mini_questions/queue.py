@@ -60,11 +60,12 @@ class Queue:
         return True if self.front is None else False
 
 
-    
-queue1 = Queue()
+if __name__ == "__main__":
 
-queue1.enqueue(4)
-queue1.enqueue(4)
-queue1.enqueue(4)
+    queue1 = Queue()
 
-print(queue1)
+    queue1.enqueue(4)
+    queue1.enqueue(4)
+    queue1.enqueue(4)
+
+    print(queue1)

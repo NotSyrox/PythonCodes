@@ -162,12 +162,12 @@ class DoubleLinkedList:
 
     def reverse(self) -> None:
         pass
-
-linList = DoubleLinkedList()
-linList.append(1)
-linList.append(2)
-linList.append(3)
-linList.append(4)
-linList.append(5)
-linList.remove(3)
-linList.printList()
+if __name__ == "__main__":
+    linList = DoubleLinkedList()
+    linList.append(1)
+    linList.append(2)
+    linList.append(3)
+    linList.append(4)
+    linList.append(5)
+    linList.remove(3)
+    linList.printList()

@@ -167,21 +167,21 @@ class BinarySearchTree:
     def printTree(self) -> None:
         pass
 
+if __name__ == "__main__":
+    binTree = BinarySearchTree()
+    binTree.insert(3)
+    binTree.insert(1)
+    binTree.insert(2)
+    binTree.insert(5)
+    binTree.insert(4)
+    binTree.insert(7)
+    binTree.printValues()
 
-binTree = BinarySearchTree()
-binTree.insert(3)
-binTree.insert(1)
-binTree.insert(2)
-binTree.insert(5)
-binTree.insert(4)
-binTree.insert(7)
-binTree.printValues()
+    print()
+    print("height: " , binTree.height())
+    binTree.breathFirstSearch()
 
-print()
-print("height: " , binTree.height())
-binTree.breathFirstSearch()
+    print("Count: ", binTree.count())
 
-print("Count: ", binTree.count())
-
-print(f"Max: {binTree.max()}, Min: {binTree.min()}")
+    print(f"Max: {binTree.max()}, Min: {binTree.min()}")
 
