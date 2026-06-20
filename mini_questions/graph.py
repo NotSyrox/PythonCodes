@@ -68,17 +68,17 @@ class Graph:
                 return True
         return False
 
+if __name__ == "__main__":
+    graph1 = Graph()
 
-graph1 = Graph()
+    graph1.addVertex(1)
+    graph1.addVertex(2)
+    graph1.addVertex(3)
+    graph1.addVertex(4)
 
-graph1.addVertex(1)
-graph1.addVertex(2)
-graph1.addVertex(3)
-graph1.addVertex(4)
+    graph1.addEdge(1, 2)
+    graph1.addEdge(2, 3)
+    graph1.addEdge(3, 1)
+    print(graph1)
 
-graph1.addEdge(1, 2)
-graph1.addEdge(2, 3)
-graph1.addEdge(3, 1)
-print(graph1)
-
-print(graph1.hasPath(1,4))
+    print(graph1.hasPath(1,4))
