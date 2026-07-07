@@ -19,7 +19,7 @@ playerImg = pygame.image.load('spaceship.png')
 playerX = 0.5 * WIDTH - 32
 playerY = HEIGHT - 84
 playerX_change = 0
-playerY_change = 0
+
 def player(x, y):
     screen.blit(playerImg, (x, y))
 
@@ -36,20 +36,12 @@ while running:
                 playerX_change -= 0.3
             if event.key == pygame.K_d:
                 playerX_change += 0.3
-
-            if event.key == pygame.K_w:
-                playerY_change -= 0.3
-            if event.key == pygame.K_s:
-                playerY_change += 0.3
             
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_a or event.key == pygame.K_d:
                 playerX_change = 0
-            if event.key == pygame.K_w or event.key == pygame.K_s:
-                playerY_change = 0
         
     playerX += playerX_change
-    playerY += playerY_change
 
     player(playerX,playerY)
     pygame.display.update()
