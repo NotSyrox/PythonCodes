@@ -40,8 +40,11 @@ while running:
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_a or event.key == pygame.K_d:
                 playerX_change = 0
-        
     playerX += playerX_change
 
+    if playerX <= 0:
+        playerX = 0
+    elif playerX >= WIDTH - 64:
+        playerX = WIDTH - 64
     player(playerX,playerY)
     pygame.display.update()
