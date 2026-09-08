@@ -2,6 +2,8 @@
 # To activate the virtual environment, run (source .venv/bin/activate) and for windows (.venv\Scripts\Activate.ps1)
 # To install these packages, run: pip install -r requirements.txt
 
+# To install pygame use this command instead of pip install pygame, : pip install pygame-ce
+
 DateTime==6.0
 pygame==2.6.1
 termcolor==3.3.0

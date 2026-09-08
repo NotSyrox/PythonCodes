@@ -32,6 +32,20 @@ def redrawGameWin():
     screen.blit(text, (5, 5))
     pygame.display.update()
 
+def gameOver():
+    font1 = pygame.font.Font('freesansbold.ttf', 100)
+    text = font1.render('Game Over', 1, (255, 0, 0))
+    screen.blit(text, (WIDTH // 2 - (text.get_width() // 2), HEIGHT // 2 - (text.get_height() // 2)))
+    pygame.display.update()
+    i = 0
+    while i < 300:
+        pygame.time.delay(10)
+        i+=1
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                i == 301
+                pygame.quit()
+
 # Class for players (single or multiple)
 class Player:
     def __init__(self, x, y, width, height):
@@ -171,6 +185,9 @@ while running:
             if player1.hitbox[0] + player1.hitbox[2]> goblin1.hitbox[0] and player1.hitbox[0] < goblin1.hitbox[0] + goblin1.hitbox[2]:
                 player1.hit()
                 score -= 10
+    elif not goblin1.visible:
+        gameOver()
+        break
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
