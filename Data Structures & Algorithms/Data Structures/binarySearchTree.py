@@ -1,19 +1,102 @@
+from collections.abc import Iterator
+from typing import Any
+
 class Node:
-    def __init__(self, data):
-        self.data = data
-        self.left = None
-        self.right = None
+    def __init__(self, data: Any) -> None:
+        self.data: Any = data
+        self.left: Node | None= None
+        self.right: Node | None = None
 
 class BinarySearchTree:
     def __init__(self) -> None:
-        self.root = None
+        self.root: Node | None = None
+
+    def __iter__(self) -> Iterator:
+        def _in_order(node) -> Iterator:
+            if node is not None:
+                yield from _in_order(node.left)
+                yield node.val
+                yield from _in_order(node.right)
+
+        return _in_order(self.root)
+
+    def __eq__(self, other: BinarySearchTree) -> bool:
+        if not isinstance(other, BinarySearchTree):
+            return False
+
+        return list(self) == list(other)
+
+    def __contains__(self, item:Any) -> bool:
+        return self.search(item)
+
+    def __bool__(self) -> bool:
+        return self.root is not None
+
+    def __len__(self) -> int:
+        return self.count()
+
+    def __and__(self, other: BinarySearchTree) -> BinarySearchTree:
+        if not isinstance(other, BinarySearchTree):
+            return NotImplemented
+        
+        if self.root is None or other.root is None:
+            return BinarySearchTree()
+
+        binarySearchTree = BinarySearchTree()
+        other_set: set = set(other)
+
+        for selfData in self:
+            if selfData in other_set:
+                binarySearchTree.insert(selfData)
+
+        return binarySearchTree
+    
+            
+    def __or__(self, other: BinarySearchTree) -> BinarySearchTree:
+        if not isinstance(other, BinarySearchTree):
+            return NotImplemented
+
+        binarySearchTree:BinarySearchTree = BinarySearchTree()
+        seen: set = set()
+
+        for selfData in self:
+            if selfData not in seen:
+                binarySearchTree.insert(selfData)
+                seen.add(selfData)
+
+        for otherData in other:
+            if otherData not in seen:
+                binarySearchTree.insert(otherData)
+                seen.add(otherData)
+                
+        return binarySearchTree
+    
+    def __xor__(self, other: BinarySearchTree) -> BinarySearchTree:
+        if not isinstance(other, BinarySearchTree):
+            return NotImplemented
+        
+        binarySearchTree = BinarySearchTree()
+
+        selfSet: set = set(self)
+        otherSet: set = set(other)
+
+        for item in selfSet:
+            if item not in otherSet:
+                binarySearchTree.insert(item)
+
+        for item in otherSet:
+            if item not in selfSet:
+                binarySearchTree.insert(item)
+
+
+        return binarySearchTree
 
     def insert(self, data) -> None:
-        newNode = Node(data)
+        newNode: Node = Node(data)
         if self.root is None:
-            self.root = newNode
+            self.root: Node | None = newNode
             return
-        cur = self.root
+        cur: Node | None = self.root
         while True:
             if data < cur.data:
                 if cur.left is None:
@@ -26,10 +109,10 @@ class BinarySearchTree:
                     return
                 cur = cur.right
     
-    def search(self, data):
+    def search(self, data: Any) -> bool:
         if self.root is None:
             return False
-        cur = self.root
+        cur: Node | None = self.root
         while cur is not None:
             if data == cur.data:
                 return True
@@ -39,10 +122,10 @@ class BinarySearchTree:
                 cur = cur.right
         return False
     
-    def printValues(self) -> str:
+    def printValues(self) -> None:
         self._printHelper(self.root)
 
-    def _printHelper(self, cur) -> None:
+    def _printHelper(self, cur: Node | None) -> None:
         if cur is None:
             return
         
@@ -50,10 +133,10 @@ class BinarySearchTree:
         print(cur.data)
         self._printHelper(cur.right)
 
-    def delete(self, data) -> None:
+    def delete(self, data: Any) -> None:
         if self.root is None:
             return
-        cur = self.root
+        cur: Node | None = self.root
         parent = None
         is_left = False
         while cur is not None:
@@ -70,10 +153,10 @@ class BinarySearchTree:
             return
 
         if cur.left is not None and cur.right is not None:
-            successor = cur.right
+            successor: Node = cur.right
             while successor.left is not None:
                 successor = successor.left
-            successor_data = successor.data
+            successor_data: Any = successor.data
             self.delete(successor_data)
             cur.data = successor_data
             return
@@ -93,7 +176,7 @@ class BinarySearchTree:
             else:
                 parent.right = None
         else:
-            child = cur.left if cur.left is not None else cur.right
+            child: Node | None = cur.left if cur.left is not None else cur.right
             if is_left:
                 parent.left = child
             else:
@@ -161,9 +244,9 @@ class BinarySearchTree:
     def breathFirstSearch(self) -> None:
         if self.root is None:
             return
-        queue = [self.root]
+        queue: list[Node] = [self.root]
         while len(queue) > 0:
-            value = queue.pop(0)
+            value: Node = queue.pop(0)
 
             print(value.data)
             if value.left is not None:
@@ -174,42 +257,49 @@ class BinarySearchTree:
     def depthFirstSearch(self) -> None:
         self.dfsHelper(self.root)
     
-    def dfsHelper(self, cur) -> None:
+    def dfsHelper(self, cur: Node | None) -> None:
         if cur is None:
             return 
+        
         print(cur.data)
+
         self.dfsHelper(cur.left)
         self.dfsHelper(cur.right)
     
-    def count(self,) -> int:
+    def count(self) -> int:
         return self._countHelper(self.root)
     
-    def _countHelper(self, cur):
+    def _countHelper(self, cur: Node | None) -> int:
         if cur is None:
             return 0
+        
         return 1 + self._countHelper(cur.left) + self._countHelper(cur.right)
     
-    def min(self) -> int:
-        cur = self.root
-        if cur is None:
-            return
+    def min(self) -> Any | None:
+        if self.root is None:
+            return None
+        
+        cur: Node | None = self.root
+        
         while True:
             if cur.left is None:
                 break
             cur = cur.left
         return cur.data
     
-    def max(self) -> int:
-        cur = self.root
-        if cur is None:
-            return
+    def max(self) -> Any | None:
+        if self.root is None:
+            return None
+        
+        cur: Node = self.root
+
         while True:
             if cur.right is None:
                 break
             cur = cur.right
         return cur.data
     
-    def _getLevels(self):
+    def _getLevels(self) -> None:
         pass 
 
     def printTree(self) -> None:
@@ -232,4 +322,3 @@ if __name__ == "__main__":
     print("Count: ", binTree.count())
 
     print(f"Max: {binTree.max()}, Min: {binTree.min()}")
-
