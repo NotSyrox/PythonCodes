@@ -13,7 +13,7 @@ class Node:
 class BinarySearchTree:
     def __init__(self) -> None:
         """
-        Creates a brand new object of BinarySearchTree.
+        Initializes the required things for a new object of BinarySearchTree.
         """
         self.root: Node | None = None
 
@@ -76,8 +76,7 @@ class BinarySearchTree:
                 seen.add(selfData)
 
         return binarySearchTree
-    
-            
+
     def __or__(self, other: BinarySearchTree) -> BinarySearchTree:
         """
         Returns a new BinarySearchTree containing all combined values from both trees. For example, print(binarySearchTree1 | binarySearchTree2), displays a new BinarySearchTree containing every value found in either tree1 or tree2.
@@ -99,7 +98,7 @@ class BinarySearchTree:
                 seen.add(otherData)
                 
         return binarySearchTree
-    
+
     def __xor__(self, other: BinarySearchTree) -> BinarySearchTree:
         """
         Returns a new BinarySearchTree containing only the values present in one tree or the other, but not both. For example, print(binarySearchTree1 ^ binarySearchTree2) displays a new BinarySearchTree containing every value unique to either tree1 or tree2.
@@ -123,7 +122,7 @@ class BinarySearchTree:
 
         return binarySearchTree
 
-    def insert(self, data) -> BinarySearchTree:
+    def insert(self, data: Any) -> BinarySearchTree:
         """
         Returns the same object, but also inserts the given value in the binary tree in the ascending order. For example, binarySearchTree1.insert(10), this would make a new node holding the value of 10 and then add it to the binarySearchTree1 according to the order, and at the end return the tree.
         """
@@ -143,7 +142,7 @@ class BinarySearchTree:
                     cur.right = newNode
                     return self
                 cur = cur.right
-    
+
     def has(self, data: Any) -> bool:
         """
         Returns a boolean based on if the given data exists in the binary tree or not. For example, binarySearchTree1.has(10), this would return true if there is a node in binarySearchTree1 which holds the value of 10, else it would return False.
@@ -238,7 +237,7 @@ class BinarySearchTree:
                 parent.left = child
             else:
                 parent.right = child
-    
+
     def height(self) -> int:
         """
         Returns an integer representing the height of the binary tree. For example, binarySearchTree1.height(), this would check the amount of levels the binary tree has and returns that.
@@ -274,7 +273,7 @@ class BinarySearchTree:
         Performs a pre-order depth-first search on the binary tree, printing the current node's value before recursively visiting its left and right subtrees.
         """
         self.__dfsHelper(self.root)
-    
+
     def __dfsHelper(self, cur: Node | None) -> None:
         """
         Private helper function for depthFirstSearch() method. This function is used for performing a pre-order traversal of the binary tree. Helps by printing the current node's data and recursively calling itself on the left and right subtrees.
@@ -286,13 +285,13 @@ class BinarySearchTree:
 
         self.__dfsHelper(cur.left)
         self.__dfsHelper(cur.right)
-    
+
     def count(self, data: Any) -> int:
         """
         Returns an integer that represents the amount of a value present in the binary tree. For example, binarySearchTree1.count(10), this counts and returns the total amount of 10s that are present in the entire binary tree.
         """
         return sum(1 for item in self if item == data)
-    
+
     def min(self) -> Any | None:
         """
         Returns the value that is the lowest/minimum in the whole binary tree. For example, binarySearchTree1.min(), this would return the data that is the lowest in the tree, or on the left most side of the tree.
@@ -307,7 +306,7 @@ class BinarySearchTree:
                 break
             cur = cur.left
         return cur.data
-    
+
     def max(self) -> Any | None:
         """
         Returns the value that is the highest/maximum in the whole binary tree. For example, binarySearchTree1.max(), this would return the data that is the highest in the tree, or on the right most side of the tree.
@@ -333,13 +332,10 @@ if __name__ == "__main__":
     binTree = BinarySearchTree()
     binTree.insert(3).insert(1).insert(2).insert(5).insert(4).insert(3).insert(7)
     binTree.printValues()
-
     print()
     print("height: " , binTree.height())
     binTree.breathFirstSearch()
     print()
     binTree.depthFirstSearch()
-
     print("Count of 3: ", binTree.count(3))
-
     print(f"Max: {binTree.max()}, Min: {binTree.min()}")
