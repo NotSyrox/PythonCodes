@@ -28,6 +28,15 @@ class BinarySearchTree:
                 yield from _in_order(node.right)
 
         return _in_order(self.root)
+    
+    def __str__(self) -> str:
+        """
+        Returns a string holding all the data of each nodes in the binary tree in ascending order. For example: str(binarySearchTree1), this could result in 'Type: BinarySearchTree, Values: 1, 2, 3' if the binarySearchTree1 is holding values 1, 2, and 3.
+        """
+        values = []
+        for i in self:
+            values.append(str(i))
+        return f"Type: BinarySearchTree, Values: {", ".join(values)}"
 
     def __eq__(self, other: BinarySearchTree) -> bool:
         """
@@ -339,3 +348,4 @@ if __name__ == "__main__":
     binTree.depthFirstSearch()
     print("Count of 3: ", binTree.count(3))
     print(f"Max: {binTree.max()}, Min: {binTree.min()}")
+    print(binTree)
