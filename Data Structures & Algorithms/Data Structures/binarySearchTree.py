@@ -253,21 +253,24 @@ class BinarySearchTree:
             return 0
         return 1 + max(self.__heightHelper(cur.left), self.__heightHelper(cur.right))
 
-    def breathFirstSearch(self) -> None:
+    def breathFirstSearch(self) -> str:
         """
-        Performs a breadth-first search (level-order traversal) on the binary tree and prints out each node's value level by level, from top to bottom and left to right.
+        Performs a breadth-first search (level-order traversal) on the binary tree and returns each node's value level by level, from top to bottom and left to right.
         """
         if self.root is None:
-            return
+            return ""
+        
+        values: list[str] = []
         queue: list[Node] = [self.root]
         while len(queue) > 0:
             value: Node = queue.pop(0)
 
-            print(value.data)
+            values.append(str(value.data))
             if value.left is not None:
                 queue.append(value.left)
             if value.right is not None:
                 queue.append(value.right)
+        return ", ".join(values)
 
     def depthFirstSearch(self) -> None:
         """
@@ -335,7 +338,7 @@ if __name__ == "__main__":
     print()
     print(binTree.getValues())
     print("height: " , binTree.height())
-    binTree.breathFirstSearch()
+    print("BFS values: " + binTree.breathFirstSearch())
     print()
     binTree.depthFirstSearch()
     print("Count of 3: ", binTree.count(3))
