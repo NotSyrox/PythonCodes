@@ -33,7 +33,7 @@ class BinarySearchTree:
         """
         Returns a string holding all the data of each nodes in the binary tree in ascending order. For example: str(binarySearchTree1), this could result in 'Type: BinarySearchTree, Values: 1, 2, 3' if the binarySearchTree1 is holding values 1, 2, and 3.
         """
-        values = []
+        values: list[str] = []
         for i in self:
             values.append(str(i))
         return f"Type: BinarySearchTree, Values: {", ".join(values)}"
@@ -264,7 +264,6 @@ class BinarySearchTree:
         queue: list[Node] = [self.root]
         while len(queue) > 0:
             value: Node = queue.pop(0)
-
             values.append(str(value.data))
             if value.left is not None:
                 queue.append(value.left)
@@ -272,23 +271,25 @@ class BinarySearchTree:
                 queue.append(value.right)
         return ", ".join(values)
 
-    def depthFirstSearch(self) -> None:
+    def depthFirstSearch(self) -> str:
         """
-        Performs a pre-order depth-first search on the binary tree, printing the current node's value before recursively visiting its left and right subtrees.
+        Performs a pre-order depth-first search on the binary tree, returning the node values as a comma-separated string.
         """
-        self.__dfsHelper(self.root)
+        result: list[str] = []
+        self.__dfsHelper(self.root, result)
+        return ", ".join(result)
 
-    def __dfsHelper(self, cur: Node | None) -> None:
+    def __dfsHelper(self, cur: Node | None, result: list[str]) -> None:
         """
-        Private helper function for depthFirstSearch() method. This function is used for performing a pre-order traversal of the binary tree. Helps by printing the current node's data and recursively calling itself on the left and right subtrees.
+        Private helper function for depthFirstSearch() method. This function is used for performing a pre-order traversal of the binary tree. Helps by appending the current node's data to a list and recursively calling itself on the left and right subtrees.
         """
         if cur is None:
             return 
         
-        print(cur.data)
+        result.append(str(cur.data))
 
-        self.__dfsHelper(cur.left)
-        self.__dfsHelper(cur.right)
+        self.__dfsHelper(cur.left, result)
+        self.__dfsHelper(cur.right, result)
 
     def count(self, data: Any) -> int:
         """
@@ -335,12 +336,10 @@ class BinarySearchTree:
 if __name__ == "__main__":
     binTree = BinarySearchTree()
     binTree.insert(3).insert(1).insert(2).insert(5).insert(4).insert(3).insert(7)
-    print()
-    print(binTree.getValues())
-    print("height: " , binTree.height())
+    print(binTree)
+    print("Height: " , binTree.height())
     print("BFS values: " + binTree.breathFirstSearch())
-    print()
-    binTree.depthFirstSearch()
+    print("DFS values: " + binTree.depthFirstSearch())
+    print("Values in the binary tree: " + binTree.getValues())
     print("Count of 3: ", binTree.count(3))
     print(f"Max: {binTree.max()}, Min: {binTree.min()}")
-    print(binTree)
