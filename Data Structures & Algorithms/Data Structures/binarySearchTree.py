@@ -170,22 +170,14 @@ class BinarySearchTree:
 
         return data in self
 
-    def printValues(self) -> None:
+    def getValues(self) -> str:
         """
-        Prints the values of the nodes in the binary tree. For example, binarySearchTree1.printValues(), this would print out all the values of the nodes present in the binarySearchTree.
+        Returns a string with all the values of the nodes found in the binary tree in ascending order. For example, binarySearchTree1.printValues(), this would return all the values of the nodes present in the binarySearchTree.
         """
-        self.__printHelper(self.root)
-
-    def __printHelper(self, cur: Node | None) -> None:
-        """
-        Private helper function for printing out each values of the nodes in the binary tree. Helps by recursively calling itself and printing the values.
-        """
-        if cur is None:
-            return
-        
-        self.__printHelper(cur.left)
-        print(cur.data)
-        self.__printHelper(cur.right)
+        values = []
+        for i in self:
+            values.append(str(i))
+        return ", ".join(values)
 
     def delete(self, data: Any) -> None:
         """
@@ -340,8 +332,8 @@ class BinarySearchTree:
 if __name__ == "__main__":
     binTree = BinarySearchTree()
     binTree.insert(3).insert(1).insert(2).insert(5).insert(4).insert(3).insert(7)
-    binTree.printValues()
     print()
+    print(binTree.getValues())
     print("height: " , binTree.height())
     binTree.breathFirstSearch()
     print()
