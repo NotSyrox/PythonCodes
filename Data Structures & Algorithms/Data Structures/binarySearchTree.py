@@ -55,19 +55,19 @@ class BinarySearchTree:
 
     def __bool__(self) -> bool:
         """
-        Returns a boolean value depending on whether the object is empty or not. For example, if binarySearchTree1, this returns True if the 'binarySearchTree1' has at least 1 node, or it returns False if the binary tree is empty.
+        Returns a boolean value depending on whether the BinarySearchTree object is empty or not. For example, if binarySearchTree1, this returns True if the 'binarySearchTree1' has at least 1 node, or it returns False if the binary tree is empty.
         """
         return self.root is not None
 
     def __len__(self) -> int:
         """
-        Returns the length of an object of BinarySearchTree type. For example, len(binarySearchTree1), this would return the amount of nodes binary tree holds.
+        Returns the length of an object of BinarySearchTree type. For example, len(binarySearchTree1), this would return the amount of nodes the binary tree holds.
         """
         return sum(1 for _ in self)
 
     def __and__(self, other: BinarySearchTree) -> BinarySearchTree:
         """
-        Returns a new BinarySearchTree containing only the values present in both trees. For example, print(binarySearchTree1 & binarySearchTree2), displays a new BinarySearchTree containing the values that are found in both binarySearchTree1 and binarySearchTree2.
+        Returns a new BinarySearchTree containing only the values present in both trees. For example, print(binarySearchTree1 & binarySearchTree2), returns a new BinarySearchTree containing the values that are found in both binarySearchTree1 and binarySearchTree2.
         """
         if not isinstance(other, BinarySearchTree):
             return NotImplemented
@@ -76,64 +76,74 @@ class BinarySearchTree:
             return BinarySearchTree()
 
         binarySearchTree = BinarySearchTree()
-        other_set: set = set(other)
-        seen: set = set()
+        other_counts = {}
+        
+        for item in other:
+            other_counts[item] = other_counts.get(item, 0) + 1
 
         for selfData in self:
-            if selfData in other_set and selfData not in seen:
+            if other_counts.get(selfData, 0) > 0:
                 binarySearchTree.insert(selfData)
-                seen.add(selfData)
+                other_counts[selfData] -= 1
 
         return binarySearchTree
 
     def __or__(self, other: BinarySearchTree) -> BinarySearchTree:
         """
-        Returns a new BinarySearchTree containing all combined values from both trees. For example, print(binarySearchTree1 | binarySearchTree2), displays a new BinarySearchTree containing every value found in either tree1 or tree2.
+        Returns a new BinarySearchTree containing all combined values from both trees. For example, print(binarySearchTree1 | binarySearchTree2), returns a new BinarySearchTree containing every value found in either tree1 or tree2.
         """
         if not isinstance(other, BinarySearchTree):
             return NotImplemented
 
-        binarySearchTree:BinarySearchTree = BinarySearchTree()
-        seen: set = set()
+        binarySearchTree = BinarySearchTree()
+        self_counts = {}
 
         for selfData in self:
-            if selfData not in seen:
-                binarySearchTree.insert(selfData)
-                seen.add(selfData)
+            binarySearchTree.insert(selfData)
+            self_counts[selfData] = self_counts.get(selfData, 0) + 1
 
         for otherData in other:
-            if otherData not in seen:
+            if self_counts.get(otherData, 0) > 0:
+                self_counts[otherData] -= 1
+            else:
                 binarySearchTree.insert(otherData)
-                seen.add(otherData)
-                
+
         return binarySearchTree
 
     def __xor__(self, other: BinarySearchTree) -> BinarySearchTree:
         """
-        Returns a new BinarySearchTree containing only the values present in one tree or the other, but not both. For example, print(binarySearchTree1 ^ binarySearchTree2) displays a new BinarySearchTree containing every value unique to either tree1 or tree2.
+        Returns a new BinarySearchTree containing only the values present in one tree or the other, but not both. For example, print(binarySearchTree1 ^ binarySearchTree2) returns a new BinarySearchTree containing every value unique to either tree1 or tree2.
         """
         if not isinstance(other, BinarySearchTree):
             return NotImplemented
         
         binarySearchTree = BinarySearchTree()
+        self_counts = {}
+        other_counts = {}
 
-        selfSet: set = set(self)
-        otherSet: set = set(other)
+        for item in self:
+            self_counts[item] = self_counts.get(item, 0) + 1
 
-        for item in selfSet:
-            if item not in otherSet:
+        for item in other:
+            other_counts[item] = other_counts.get(item, 0) + 1
+
+        for item in self:
+            if other_counts.get(item, 0) > 0:
+                other_counts[item] -= 1
+            else:
                 binarySearchTree.insert(item)
 
-        for item in otherSet:
-            if item not in selfSet:
+        for item in other:
+            if self_counts.get(item, 0) > 0:
+                self_counts[item] -= 1
+            else:
                 binarySearchTree.insert(item)
-
 
         return binarySearchTree
 
     def insert(self, data: Any) -> BinarySearchTree:
         """
-        Returns the same object, but also inserts the given value in the binary tree in the ascending order. For example, binarySearchTree1.insert(10), this would make a new node holding the value of 10 and then add it to the binarySearchTree1 according to the order, and at the end return the tree.
+        Returns the same object, but inserts the given value in the binary tree in the ascending order. For example, binarySearchTree1.insert(10), this would make a new node holding the value of 10 and then add it to the binarySearchTree1 according to the order, and at the end return the tree.
         """
         newNode: Node = Node(data)
         if self.root is None:
