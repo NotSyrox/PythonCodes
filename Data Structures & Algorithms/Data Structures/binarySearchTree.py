@@ -1,5 +1,6 @@
 from collections.abc import Iterator
 from typing import Any
+from collections import deque
 
 class Node:
     def __init__(self, data: Any) -> None:
@@ -38,12 +39,12 @@ class BinarySearchTree:
             values.append(str(i))
         return f"Type: BinarySearchTree, Values: {", ".join(values)}"
 
-    def __eq__(self, other: BinarySearchTree) -> bool:
+    def __eq__(self, other: object) -> bool:
         """
         Returns a boolean by comparing all the elements from one BinarySearchTree object to another. For example: if binarySearchTree1 == binarySearchTree2, this comparison would check if all the values in the tree are the same from left to right.
         """
         if not isinstance(other, BinarySearchTree):
-            return False
+            return NotImplemented
 
         return list(self) == list(other)
 
@@ -51,7 +52,7 @@ class BinarySearchTree:
         """
         Returns a boolean by checking if a given item exists in the binary tree or not. For example: if 3 in binarySearchTree1, this is checking if the binary tree 'binarySearchTree1' has a node with the value of 3.
         """
-        return item in list(self)
+        return self.has(item)
 
     def __bool__(self) -> bool:
         """
@@ -147,7 +148,7 @@ class BinarySearchTree:
         """
         newNode: Node = Node(data)
         if self.root is None:
-            self.root: Node | None = newNode
+            self.root = newNode
             return self
         cur: Node | None = self.root
         while True:
@@ -166,53 +167,42 @@ class BinarySearchTree:
         """
         Returns a boolean based on if the given data exists in the binary tree or not. For example, binarySearchTree1.has(10), this would return true if there is a node in binarySearchTree1 which holds the value of 10, else it would return False.
         """
-        # if self.root is None:
-        #     return False
-        # cur: Node | None = self.root
-        # while cur is not None:
-        #     if data == cur.data:
-        #         return True
-        #     if data < cur.data:
-        #         cur = cur.left
-        #     else:
-        #         cur = cur.right
-        # return False
-
-        return data in self
-
-    def getValues(self) -> str:
-        """
-        Returns a string with all the values of the nodes found in the binary tree in ascending order. For example, binarySearchTree1.printValues(), this would return all the values of the nodes present in the binarySearchTree.
-        """
-        values = []
-        for i in self:
-            values.append(str(i))
-        return ", ".join(values)
-
-    def delete(self, data: Any) -> None:
-        """
-        Returns the same object, but also deletes the first node it finds from in the binary tree with the given value. For example, binarySearchTree1.delete(10), this would search for the value 10 and delete that node if found and move the other nodes accordingly, finally it would return the tree. 
-        """
-        if self.root is None:
-            return
-
         cur: Node | None = self.root
-        parent = None
-        is_left = False
-
         while cur is not None:
             if data == cur.data:
-                break
+                return True
+            cur = cur.left if data < cur.data else cur.right
+        return False
+
+    def copy(self) -> BinarySearchTree:
+        """
+        Returns a new BinarySearchTree object that is a copy of the current tree. For example, binarySearchTree1.copy(), this would create a new binary search tree with the same values as binarySearchTree1.
+        """
+        new_tree = BinarySearchTree()
+
+        for item in self.depthFirstSearch():
+            new_tree.insert(item)
+        return new_tree
+
+    def clear(self) -> None:
+        """
+        Clears the binary search tree, removing all nodes and resetting it to an empty state. For example, binarySearchTree1.clear(), this would remove all nodes from binarySearchTree1 and make it an empty tree.
+        """
+        self.root = None
+
+    def delete(self, data: Any) -> BinarySearchTree:
+        """
+        Deletes the first node found with the given value and returns the tree. For example, binarySearchTree1.delete(10), this would search for the value 10 and delete that node if found and move the other nodes accordingly, finally it would return the tree. 
+        """
+        parent: Node | None = None
+        cur: Node | None = self.root
+
+        while cur is not None and cur.data != data:
             parent = cur
-            if data < cur.data:
-                cur = cur.left
-                is_left = True
-            else:
-                cur = cur.right
-                is_left = False
+            cur = cur.left if data < cur.data else cur.right
 
         if cur is None:
-            return
+            return self
 
         if cur.left is not None and cur.right is not None:
             successor_parent: Node = cur
@@ -221,33 +211,17 @@ class BinarySearchTree:
                 successor_parent = successor
                 successor = successor.left
             cur.data = successor.data
-            if successor_parent == cur:
-                successor_parent.right = successor.right
-            else:
-                successor_parent.left = successor.right
-            return
+            parent, cur = successor_parent, successor
 
+        child: Node | None = cur.left if cur.left is not None else cur.right
         if parent is None:
-            if cur.left is None and cur.right is None:
-                self.root = None
-            elif cur.left is None:
-                self.root = cur.right
-            elif cur.right is None:
-                self.root = cur.left
-            return
-
-        if cur.left is None and cur.right is None:
-            if is_left:
-                parent.left = None
-            else:
-                parent.right = None
-
+            self.root = child
+        elif parent.left is cur:
+            parent.left = child
         else:
-            child: Node | None = cur.left if cur.left is not None else cur.right
-            if is_left:
-                parent.left = child
-            else:
-                parent.right = child
+            parent.right = child
+
+        return self
 
     def height(self) -> int:
         """
@@ -263,40 +237,42 @@ class BinarySearchTree:
             return 0
         return 1 + max(self.__heightHelper(cur.left), self.__heightHelper(cur.right))
 
-    def breathFirstSearch(self) -> str:
+    def breadthFirstSearch(self) -> list:
         """
-        Performs a breadth-first search (level-order traversal) on the binary tree and returns each node's value level by level, from top to bottom and left to right.
+        Performs a breadth-first search (level-order traversal) on the binary tree and returns a list holding the values of the nodes in the order they are visited, from top to bottom and left to right.
         """
         if self.root is None:
-            return ""
-        
-        values: list[str] = []
-        queue: list[Node] = [self.root]
-        while len(queue) > 0:
-            value: Node = queue.pop(0)
-            values.append(str(value.data))
-            if value.left is not None:
-                queue.append(value.left)
-            if value.right is not None:
-                queue.append(value.right)
-        return ", ".join(values)
+            return []
 
-    def depthFirstSearch(self) -> str:
+        values: list[Any] = []
+        queue: deque[Node] = deque([self.root])
+
+        while queue:
+            node: Node = queue.popleft()
+            values.append(node.data)
+            if node.left is not None:
+                queue.append(node.left)
+            if node.right is not None:
+                queue.append(node.right)
+
+        return values
+
+    def depthFirstSearch(self) -> list:
         """
-        Performs a pre-order depth-first search on the binary tree, returning the node values as a comma-separated string.
+        Performs a pre-order depth-first search on the binary tree, returning the node values as a list.
         """
-        result: list[str] = []
+        result: list[Any] = []
         self.__dfsHelper(self.root, result)
-        return ", ".join(result)
+        return result
 
-    def __dfsHelper(self, cur: Node | None, result: list[str]) -> None:
+    def __dfsHelper(self, cur: Node | None, result: list[Any]) -> None:
         """
         Private helper function for depthFirstSearch() method. This function is used for performing a pre-order traversal of the binary tree. Helps by appending the current node's data to a list and recursively calling itself on the left and right subtrees.
         """
         if cur is None:
             return 
-        
-        result.append(str(cur.data))
+
+        result.append(cur.data)
 
         self.__dfsHelper(cur.left, result)
         self.__dfsHelper(cur.right, result)
@@ -337,19 +313,74 @@ class BinarySearchTree:
             cur = cur.right
         return cur.data
 
-    def printTree(self) -> None:
+    def asString(self) -> str:
         """
-        Prints all the nodes of a binary tree in a binary tree pattern using root, left/right nodes, and arrows.
+        Returns a string with all the values of the nodes found in the binary tree in ascending order. For example, binarySearchTree1.asString(), this would return all the values of the nodes present in the binarySearchTree.
         """
-        pass
+        values = []
+        for i in self:
+            values.append(str(i))
+        return ", ".join(values)
+
+    def asList(self) -> list:
+        """
+        Returns a list representation of the binary search tree, showing the values of each node in order. For example, binarySearchTree1.asList(), this would return a list like [10, 20, 30] if the binary search tree contains those values in that order.
+        """
+        return list(self)
+
+    def asTuple(self) -> tuple:
+        """
+        Returns a tuple representation of the binary search tree, showing the values of each node in order. For example, binarySearchTree1.asTuple(), this would return a tuple like (10, 20, 30) if the binary search tree contains those values in that order.
+        """
+        return tuple(self)
+
+    def asSet(self) -> set:
+        """
+        Returns a set representation of the binary search tree, showing the unique values of each node. For example, binarySearchTree1.asSet(), this would return a set like {10, 20, 30} if the binary search tree contains those values.
+        """
+        return set(self)
+
+    @staticmethod
+    def fromList(values: list) -> BinarySearchTree:
+        """
+        Creates a new BinarySearchTree from a given list of values with the root as the first element. For example, BinarySearchTree.fromList([10, 20, 30]), this would create a new binary search tree with nodes containing the values 10, 20, and 30.
+        """
+        binarySearchTree = BinarySearchTree()
+
+        for value in values:
+            binarySearchTree.insert(value)
+        return binarySearchTree
+
+    @staticmethod
+    def fromTuple(values: tuple) -> BinarySearchTree:
+        """
+        Creates a new BinarySearchTree from a given tuple of values with the root as the first element. For example, BinarySearchTree.fromTuple((10, 20, 30)), this would create a new binary search tree with nodes containing the values 10, 20, and 30.
+        """
+        binarySearchTree = BinarySearchTree()
+
+        for value in values:
+            binarySearchTree.insert(value)
+        return binarySearchTree
+
+    @staticmethod
+    def fromSet(values: set) -> BinarySearchTree:
+        """
+        Creates a new BinarySearchTree from a given set of values. For example, BinarySearchTree.fromSet({10, 20, 30}), this would create a new binary search tree with nodes containing the values 10, 20, and 30.
+        """
+        binarySearchTree = BinarySearchTree()
+
+        for value in values:
+            binarySearchTree.insert(value)
+        return binarySearchTree
+
 
 if __name__ == "__main__":
     binTree = BinarySearchTree()
     binTree.insert(3).insert(1).insert(2).insert(5).insert(4).insert(3).insert(7)
     print(binTree)
     print("Height: " , binTree.height())
-    print("BFS values: " + binTree.breathFirstSearch())
-    print("DFS values: " + binTree.depthFirstSearch())
-    print("Values in the binary tree: " + binTree.getValues())
+    print("BFS values: " + ", ".join(map(str, binTree.breadthFirstSearch())))
+    print("DFS values: " + ", ".join(map(str, binTree.depthFirstSearch())))
+    print("Values in the binary tree: " + binTree.asString())
     print("Count of 3: ", binTree.count(3))
     print(f"Max: {binTree.max()}, Min: {binTree.min()}")
