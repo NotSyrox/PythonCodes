@@ -298,6 +298,15 @@ class SinglyLinkedList:
         self.head = previous
         return self
 
+    def asLinkedList(self) -> str:
+        """
+        Returns a string representing the linked list in a specific pattern. For example, singlyLinkedList1.asLinkedList(), this would print all the nodes in this pattern: 10 -> 20 -> 30 -> None, if it holds 10, 20, 30.
+        """
+        values = []
+        for item in self:
+            values.append(str(item))
+        return " -> ".join(values) + " -> None" if self else "None"
+
     def asString(self) -> str:
         """
         Returns a string with all the values of the nodes found in the linked list in order. For example, singlyLinkedList1.asString(), this would return a string with all the values of the nodes present in the singlyLinkedList.
@@ -365,3 +374,4 @@ if __name__ == "__main__":
     print(newList.count(30))
     print(newList.asList())
     print(newList.reverse().asList())
+    print(SinglyLinkedList.fromTuple((1, 2, 3, 4, 5, 6, 7, 8, 9, 10)).asLinkedList())

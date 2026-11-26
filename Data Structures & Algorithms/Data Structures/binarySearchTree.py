@@ -384,3 +384,4 @@ if __name__ == "__main__":
     print("Values in the binary tree: " + binTree.asString())
     print("Count of 3: ", binTree.count(3))
     print(f"Max: {binTree.max()}, Min: {binTree.min()}")
+    print(BinarySearchTree.fromList([10,2,6,3,1,7,9]))
